@@ -1,0 +1,29 @@
+{
+  "name": "lab6_unittesting",
+  "version": "1.0.0",
+  "description": "Node.js app with unit testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VVladislaVLL/qa-bsu-testing.git"
+  },
+  "keywords": [
+    "Node.js",
+    "JS",
+    "Unit",
+    "Testing",
+    "Mocha"
+  ],
+  "author": "Uladzislau Kachurka <Uladzislau_Kachurka@epam.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VVladislaVLL/qa-bsu-testing/issues"
+  },
+  "homepage": "https://github.com/VVladislaVLL/qa-bsu-testing#readme",
+  "devDependencies": {
+    "mocha": "^9.1.3"
+  }
+}
