@@ -1,89 +1,69 @@
-import {Browser, Builder, By, WebDriver, WebElement} from 'selenium-webdriver'
+import {Browser, Builder, By, WebDriver, WebElement} from 'selenium-webdriver';
 
-export default class AviasalesMainPage {
-    private static readonly MAIN_PAGE_URL = 'https://www.aviasales.by/'
+import AviasalesBasePage from './AviasalesBasePage';
+import AviasalesResultsPage from "./AviasalesResultsPage";
 
-    public driver: WebDriver
+export default class AviasalesMainPage extends AviasalesBasePage{
+    private static readonly MAIN_PAGE_URL = 'https://www.aviasales.by/';
 
-    private readonly formLocator: By = By.xpath('/html/body/div[1]/div/div/div[3]/div/div[1]/div[3]/div/div/form')
+    private readonly aviaFormLocator: By = By.className('avia-form');
+    private readonly aviaFormSearchBtnLocator: By = By.xpath('//div[@class="avia-form__submit"]/button');
+    private readonly aviaFormFromInputLocator: By = By.id('origin');
+    private readonly aviaFormToInputLocator: By = By.id('destination');
+    private readonly durationDropdownLocator: By = By.className('trip-duration__field --departure');
+    private readonly departureDateLocator: By = By.xpath('//div[@aria-label="Fri Dec 24 2021"]');
+    private readonly openBookingInNewWindowCheckBoxLocator: By = By.className('of_input_checkbox__label');
+
+    private readonly textForFromInputField: string = 'Минск';
+    private readonly textForToInputField: string = 'Москва';
 
     constructor(driver: WebDriver) {
-        this.driver = driver
+        super(driver);
     }
 
     public isInitialized(): Promise<boolean> {
-        return this.findElementByLocator(this.formLocator).isDisplayed()
+        return super.isInitialized(this.aviaFormLocator);
     }
 
     public openHomePage(): this {
         this.driver.get(AviasalesMainPage.MAIN_PAGE_URL);
-        return this
-    }
-
-    public fillInFromInput(): this {
-        this.driver.findElement(By.id('origin')).sendKeys('Минск')
-        return this
-
-    }
-
-    public fillInToInput(): this {
-        this.driver.findElement(By.id('destination')).sendKeys('Москва')
-        return this
-    }
-
-    public clickFindTicketsButton(): this {
-        this.driver.wait(() => {
-            this.driver.findElement(
-                By.xpath('//div[@class="avia-form__submit"]/button')
-            ).click();
-        }, 1000)
         return this;
     }
 
-    public openDurationDropdown() {
+    public fillInAviaFormFromInput(): this {
         (async () => {
-            await this.driver.findElement(
-                By.className('trip-duration__field --departure')
-            ).click();
-        })()
+            await this.findElementByLocator(this.aviaFormFromInputLocator).sendKeys(this.textForFromInputField);
+        })();
+        return this;
+
     }
 
-    public setDateToFly() {
+    public fillInAviaFormToInput(): this {
         (async () => {
-            await this.driver.findElement(
-                By.xpath('/html/body/div[1]/div/div/div[3]/div/div[1]/div[3]/div/div/form/div[3]/div/div[3]/div/div/div[2]/div[2]/div/div/div/div[2]/div[2]/div[3]/div[3]/div[5]')
-        ).click();
-        })()
-    }
-
-    private findElementByLocator(locator: By) {
-        return this.driver.findElement(locator)
-    }
-
-    public clickCheckBox(): this {
-        (async () => {
-            await this.driver.findElement(
-                  By.className('of_input_checkbox__label')
-            ).click();
-        })()
-
+            await this.findElementByLocator(this.aviaFormToInputLocator).sendKeys(this.textForToInputField);
+        })();
         return this;
     }
-    public getTickets() {
-        return this.driver.findElements(By.className('product-list__item'));
-    }
 
-    public getFirstTicket() {
-        return this.driver.findElement(By.className('product-list__item'));
-    }
-
-    public async getTextLabel(element: WebElement) {
-        return element.findElement(By.xpath('//span[@class="ticket-badge__label"]'));
-    }
-
-    public quite() {
+    public openDurationDropdown(): this {
         (async () => {
-            await this.driver.quit();
-        })()
+            await this.findElementByLocator(this.durationDropdownLocator).click();
+        })();
+        return this;
+    }
+
+    public setDepartureDateInDurationDropdownAndClickSearchBtn(): AviasalesResultsPage {
+        (async () => {
+            await this.findElementByLocator(this.departureDateLocator).click();
+            await this.findElementByLocator(this.aviaFormSearchBtnLocator).click();
+        })();
+        return new AviasalesResultsPage(this.driver);
+    }
+
+    public switchOffOpenBookingInNewWindowCheckbox(): this {
+        (async () => {
+            await this.findElementByLocator(this.openBookingInNewWindowCheckBoxLocator).click();
+        })();
+        return this;
     }
 }

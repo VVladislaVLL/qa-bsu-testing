@@ -1,42 +1,35 @@
+import {Options} from 'selenium-webdriver/chrome';
+import {Browser, Builder, WebDriver} from 'selenium-webdriver';
+
 import AviasalesMainPage from '../pages/AviasalesMainPage';
-import {Browser, Builder, By, until, WebDriver} from 'selenium-webdriver';
-jest.setTimeout(1000000)
+
+jest.setTimeout(1000000);
+
 describe('Aviasales Main Page', () => {
     let driver: WebDriver
     let aviasalesPage: AviasalesMainPage
 
     beforeAll(() => {
-        driver = new Builder().forBrowser(Browser.CHROME).build()
-    })
+        driver = new Builder().forBrowser(Browser.CHROME)
+            .setChromeOptions(new Options().addArguments(...["--headless", "--no-sandbox", "--disable-dev-shm-usage"]))
+            .build();
+    });
 
     beforeEach(() => {
-        aviasalesPage = new AviasalesMainPage(driver)
-
-    })
-
-    it('should be initialized', () => {
-        return expect(
-            aviasalesPage
-                .openHomePage()
-                .isInitialized()
-        ).toBeTruthy()
+        aviasalesPage = new AviasalesMainPage(driver);
     });
 
     it('First ticker should have special badge "Самый дешевый"', async () => {
+        const expected = 'самый дешёвый';
         aviasalesPage.openHomePage();
-        aviasalesPage
-            .fillInFromInput()
-            .fillInToInput()
-            .clickCheckBox()
-            .openDurationDropdown();
-        await aviasalesPage.driver.wait(until.elementLocated(By.className('trip-duration__dropdown')));
-        aviasalesPage.setDateToFly();
-        aviasalesPage.clickFindTicketsButton();
-        await aviasalesPage.driver.wait(until.elementLocated(By.xpath('//div[@class="product-list"]')));
-        const allTickets = await aviasalesPage.getTickets();
-        const firstTicket = await aviasalesPage.getFirstTicket();
-        const label = await aviasalesPage.getTextLabel(firstTicket);
-        expect( (await label.getText()).toLowerCase()).toEqual('САМЫЙ ДЕШЁВЫЙ'.toLowerCase());
+        const cheapestTicketLabel = await aviasalesPage
+            .fillInAviaFormFromInput()
+            .fillInAviaFormToInput()
+            .switchOffOpenBookingInNewWindowCheckbox()
+            .openDurationDropdown()
+            .setDepartureDateInDurationDropdownAndClickSearchBtn()
+            .getCheapestTicketLabelText();
+        expect(cheapestTicketLabel.toLowerCase()).toEqual(expected);
     });
 
     afterAll(async () => {
