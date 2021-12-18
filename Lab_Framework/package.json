@@ -1,0 +1,30 @@
+{
+  "name": "Lab8_WebDriver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "example": "tsc && node dist/pages/Aviasales.js",
+    "test": "jest",
+    "test-firefox": "BROWSER=firefox jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chromedriver": "^96.0.0",
+    "geckodriver": "^2.0.4",
+    "selenium-webdriver": "^4.0.0",
+    "webdriver-manager": "^12.1.8"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
+    "@types/jest": "^27.0.2",
+    "@types/selenium-webdriver": "^4.0.16",
+    "babel-jest": "^27.3.1",
+    "jest": "^27.3.1",
+    "typescript": "^4.4.4"
+  }
+}
