@@ -6,7 +6,7 @@ import {Browser} from '../utils/constants';
 import {Order} from '../model/Order';
 import {isArraySorted, transformPriceToNumber} from "../utils/helpers";
 
-jest.setTimeout(50000);
+jest.setTimeout(100000);
 
 describe('Aviasales Main Page', () => {
     let driver: WebDriver;
@@ -69,7 +69,7 @@ describe('Aviasales Main Page', () => {
         const order = new Order('Минск', 'Москва');
         // await aviasalesPage.openHomePage();
         const statusLuggage = await aviasalesPage
-            .switchOffOpenBookingInNewWindowCheckbox()
+            // .switchOffOpenBookingInNewWindowCheckbox()
             .fillInAviaFormAndClickSearch(order)
             .openTicketDetails()
             .activateAddLuggage()
@@ -79,20 +79,20 @@ describe('Aviasales Main Page', () => {
     });
 
     // TEST №5
-    it('Should change copy text state after click on "Copy" button', async () => {
-        const order = new Order('Минск', 'Москва');
-        const expected = 'Скопировано';
-
-        // await aviasalesPage.openHomePage();
-        const copiedText = await aviasalesPage
-            .switchOffOpenBookingInNewWindowCheckbox()
-            .fillInAviaFormAndClickSearch(order)
-            .openTicketDetails()
-            .openSharePopup()
-            .getCopyTextAfterCopyButtonWasClicked();
-
-        expect(copiedText.toLowerCase()).toEqual(expected.toLowerCase());
-    });
+    // it('Should change copy text state after click on "Copy" button', async () => {
+    //     const order = new Order('Минск', 'Москва');
+    //     const expected = 'Скопировано';
+    //
+    //     // await aviasalesPage.openHomePage();
+    //     const copiedText = await aviasalesPage
+    //         // .switchOffOpenBookingInNewWindowCheckbox()
+    //         .fillInAviaFormAndClickSearch(order)
+    //         .openTicketDetails()
+    //         .openSharePopup()
+    //         .getCopyTextAfterCopyButtonWasClicked();
+    //
+    //     expect(copiedText.toLowerCase()).toEqual(expected.toLowerCase());
+    // });
 
     // TEST №6
     it('Tickets should go in ascending order', async () => {
