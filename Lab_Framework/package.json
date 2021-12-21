@@ -1,20 +1,22 @@
 {
-  "name": "Lab8_WebDriver",
+  "name": "Lab_Framework",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automation TestingFramework",
   "main": "index.js",
   "scripts": {
+    "test": "jest --config=src/config/dev.chrome.js",
     "example": "tsc && node dist/pages/Aviasales.js",
-    "test": "jest",
+    "test2": "jest",
     "test-firefox": "BROWSER=firefox jest"
   },
-  "author": "",
+  "author": "Uladzislau Kachurka<uladzislau_kachurka@epam.com>",
   "license": "ISC",
   "dependencies": {
     "chromedriver": "^96.0.0",
     "geckodriver": "^2.0.4",
     "selenium-webdriver": "^4.0.0",
-    "webdriver-manager": "^12.1.8"
+    "webdriver-manager": "^12.1.8",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",

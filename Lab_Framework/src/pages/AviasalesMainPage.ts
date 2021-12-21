@@ -1,4 +1,5 @@
-import {Browser, Builder, By, WebDriver, WebElement} from 'selenium-webdriver';
+import {By, until, WebDriver} from 'selenium-webdriver';
+import {logger} from '../utils/logger';
 
 import AviasalesBasePage from './AviasalesBasePage';
 import AviasalesResultsPage from "./AviasalesResultsPage";
@@ -32,6 +33,7 @@ export default class AviasalesMainPage extends AviasalesBasePage{
 
     public openHomePage(): this {
         this.driver.get(AviasalesMainPage.MAIN_PAGE_URL);
+        logger.info('Open Page: ' + AviasalesMainPage.MAIN_PAGE_URL);
         return this;
     }
 
@@ -85,6 +87,7 @@ export default class AviasalesMainPage extends AviasalesBasePage{
 
     public fillInAviaFormAndClickSearch(order: Order): AviasalesResultsPage {
         (async () => {
+            // await  this.driver.wait(until.elementIsDisabled(this.findElementByLocator(this.openBookingInNewWindowCheckBoxLocator)))
             await this._fillInDeparturePointInput(order.departurePoint);
             await this._fillInDestinationPointInput(order.destinationPoint);
             await this._openDurationDropDown();
@@ -92,14 +95,28 @@ export default class AviasalesMainPage extends AviasalesBasePage{
             await this._inputDateInDurationDropDown(order.backDate);
             await this._clickSearchButton();
         })();
-
+        logger.info('Fill in AviaForm. Open AviasalesResultsPage.');
         return new AviasalesResultsPage(this.driver);
     }
 
     public switchOffOpenBookingInNewWindowCheckbox(): this {
         (async () => {
+            // await this.driver.wait(until.elementIsEnabled(this.driver.findElement(this.aviaFormSearchBtnLocator)));
+            // await this.findElementByLocator(this.openBookingInNewWindowCheckBoxLocator).then(check => {
+            //     check.isSelected().then((res) => {
+            //         if (res) {
+            //             this.findElementByLocator(this.openBookingInNewWindowCheckBoxLocator).click();
+            //         }
+            //     })
+            // })
+            // await checkbox.isSelected().then((res) => {
+            //     if (res) {
+            //         checkbox.click();
+            //     }
+            // })
             await this.findElementByLocator(this.openBookingInNewWindowCheckBoxLocator).click();
         })();
+        logger.info('Switch Off Open Booking In New Window Checkbox');
         return this;
     }
 
@@ -108,6 +125,7 @@ export default class AviasalesMainPage extends AviasalesBasePage{
             await this._inputDateInDurationDropDown(date);
             await this._clickSearchButton();
         })();
+        logger.info('Open Aviasales Results Page');
         return new AviasalesResultsPage(this.driver);
     }
 

@@ -6,36 +6,42 @@ import {Browser} from '../utils/constants';
 import {Order} from '../model/Order';
 import {isArraySorted, transformPriceToNumber} from "../utils/helpers";
 
-jest.setTimeout(500000);
+jest.setTimeout(50000);
 
 describe('Aviasales Main Page', () => {
     let driver: WebDriver;
     let aviasalesPage: AviasalesMainPage;
 
-    beforeAll(() => {
-        driver = DriverSingleton.getDiver(Browser.Chrome);
+    beforeAll(async () => {
+        driver = await DriverSingleton.getDiver();
     });
 
     beforeEach(() => {
-        aviasalesPage = new AviasalesMainPage(driver);
+        aviasalesPage = new AviasalesMainPage(driver).openHomePage();
     });
 
+    //
+    // it('---', async () => {
+    //     aviasalesPage.openHomePage();
+    //     const cheapestTicketLabel = await aviasalesPage
+    //         .switchOffOpenBookingInNewWindowCheckbox()
+    // });
     // TEST №1
     it('First ticker should have special badge "Самый дешевый"', async () => {
         const order = new Order('Минск', 'Москва');
         const expected = 'самый дешёвый';
-        aviasalesPage.openHomePage();
+        // aviasalesPage.openHomePage();
         const cheapestTicketLabel = await aviasalesPage
             .switchOffOpenBookingInNewWindowCheckbox()
             .fillInAviaFormAndClickSearch(order)
             .getCheapestTicketLabelText();
         expect(cheapestTicketLabel.toLowerCase()).toEqual(expected);
     });
-    //
-    // // TEST №2
+
+    // TEST №2
     it('Warning "Укажите город прибытия" should appear if required fields are not filed', async () => {
         const expected = 'укажите город прибытия';
-        aviasalesPage.openHomePage();
+        // aviasalesPage.openHomePage();
         const errorAttrValue = await aviasalesPage
             .switchOffOpenBookingInNewWindowCheckbox()
             .clickSearchButton()
@@ -47,7 +53,7 @@ describe('Aviasales Main Page', () => {
     // TEST №3
     it('Should appear invalid search container if invalid date was passed', async () => {
         const order = new Order('Минск', 'Москва');
-        await aviasalesPage.openHomePage();
+        // await aviasalesPage.openHomePage();
         const invalidSearchParametersContainer = await aviasalesPage
             .switchOffOpenBookingInNewWindowCheckbox()
             .fillInAviaFormToInput(order.destinationPoint)
@@ -57,12 +63,13 @@ describe('Aviasales Main Page', () => {
 
         expect(invalidSearchParametersContainer.length > 0).toBeTruthy();
     });
-    //
-    // // TEST №4
+
+    // TEST №4
     it('Should change display of luggage if click on add luggage in ticket popup', async () => {
         const order = new Order('Минск', 'Москва');
-        await aviasalesPage.openHomePage();
+        // await aviasalesPage.openHomePage();
         const statusLuggage = await aviasalesPage
+            .switchOffOpenBookingInNewWindowCheckbox()
             .fillInAviaFormAndClickSearch(order)
             .openTicketDetails()
             .activateAddLuggage()
@@ -76,8 +83,9 @@ describe('Aviasales Main Page', () => {
         const order = new Order('Минск', 'Москва');
         const expected = 'Скопировано';
 
-        await aviasalesPage.openHomePage();
+        // await aviasalesPage.openHomePage();
         const copiedText = await aviasalesPage
+            .switchOffOpenBookingInNewWindowCheckbox()
             .fillInAviaFormAndClickSearch(order)
             .openTicketDetails()
             .openSharePopup()
@@ -99,6 +107,6 @@ describe('Aviasales Main Page', () => {
     });
 
     afterAll(async () => {
-        DriverSingleton.closeDriver();
+        await DriverSingleton.closeDriver();
     })
 })

@@ -1,7 +1,6 @@
 export class Order {
     private _departurePoint: string;
     private _destinationPoint: string;
-    private _departureDate: Date = new Date();
 
     constructor(departurePoint: string, destinationPoint: string) {
         this._departurePoint = departurePoint;
@@ -14,14 +13,6 @@ export class Order {
 
     get destinationPoint(): string {
         return this._destinationPoint;
-    }
-
-    set departurePoint(value: string) {
-        this._departurePoint = value;
-    }
-
-    set destinationPoint(value: string) {
-        this._destinationPoint = value;
     }
 
     get departureDate(): string {

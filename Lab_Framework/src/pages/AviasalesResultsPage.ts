@@ -1,4 +1,5 @@
-import {By, logging, until, WebDriver, WebElement, WebElementPromise} from 'selenium-webdriver';
+import {By, WebDriver, WebElementPromise} from 'selenium-webdriver';
+import {logger} from '../utils/logger';
 
 import AviasalesBasePage from './AviasalesBasePage';
 
@@ -55,6 +56,7 @@ export default class AviasalesResultsPage extends AviasalesBasePage {
             await this.waitUntilPageIsFullyLoaded();
             await this._getTicket().click();
         })();
+        logger.info('Open Ticket Details');
         return this;
     }
 
@@ -66,6 +68,7 @@ export default class AviasalesResultsPage extends AviasalesBasePage {
                     then(element => element.click().then(() => true, err => false), err => false);
             });
         })();
+        logger.info('Activate Add Luggage');
         return this;
     }
 
@@ -77,6 +80,7 @@ export default class AviasalesResultsPage extends AviasalesBasePage {
                     then(element => element.click().then(() => true, err => false), err => false);
             });
         })();
+        logger.info('Open Share Popup');
         return this;
     }
 

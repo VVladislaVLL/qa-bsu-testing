@@ -1,4 +1,5 @@
 import {By, until, WebDriver, WebElement} from 'selenium-webdriver';
+import {logger} from '../utils/logger';
 
 export default class AviasalesBasePage {
     protected driver: WebDriver;
@@ -22,6 +23,7 @@ export default class AviasalesBasePage {
     }
 
     public quite() {
+        logger.info('Driver Quite');
         (async () => {
             await this.driver.quit();
         })()
